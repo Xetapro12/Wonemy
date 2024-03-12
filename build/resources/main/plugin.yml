@@ -1,0 +1,4 @@
+name: Wonemy
+version: '1.0-SNAPSHOT'
+main: org.wonemy.untitled.Wonemy
+api-version: '1.20'
