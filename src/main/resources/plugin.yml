@@ -1,4 +1,4 @@
 name: Wonemy
 version: '${version}'
-main: org.wonemy.untitled.Wonemy
+main: org.wonemy.Wonemy
 api-version: '1.20'
