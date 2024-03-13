@@ -38,6 +38,8 @@ public final class Wonemy extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PaperSignChangeEvent(), this);
 
         this.economyManager = new EconomyManager();
+        saveDefaultConfig();
+
     }
 
     @Override

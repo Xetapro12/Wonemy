@@ -19,21 +19,27 @@ public class PaperSignChangeEvent implements Listener {
     public void onSignChange(SignChangeEvent event) {
         Player player = event.getPlayer();
 
-        if (!player.hasPermission("wonemy.create")) return;
+        // Check if the player has permission to create the sign
+        if (!player.hasPermission("wonemy.create")) {
+            return;
+        }
 
         if (event.getLine(0).equalsIgnoreCase("[LevelUp]")) {
             try {
                 int levels = Integer.parseInt(event.getLine(1));
                 double cost = Double.parseDouble(event.getLine(2));
 
-                event.setLine(0, ChatColor.DARK_AQUA+ "[LevelUp]");
-                event.setLine(1, ChatColor.AQUA + "Levels: " + levels);
-                event.setLine(2, ChatColor.AQUA + "Cost: $" + cost);
+                event.setLine(0, ChatColor.valueOf(getConfig().getString("sign.color", "GREEN")) + "[LevelUp]");
+                event.setLine(1, ChatColor.valueOf(getConfig().getString("sign.levelsColor", "YELLOW")) + "Levels: " + levels);
+                event.setLine(2, ChatColor.valueOf(getConfig().getString("sign.costColor", "YELLOW")) + "Cost: $" + cost);
 
+                // Set the sign as uneditable
                 Sign sign = (Sign) event.getBlock().getState();
-                sign.getPersistentDataContainer().set(new NamespacedKey(wonemy, "wonemy.uneditable"), PersistentDataType.BYTE, (byte) 1);
+                sign.getPersistentDataContainer().set(new NamespacedKey(this, "wonemy_uneditable"), PersistentDataType.BYTE, (byte) 1);
+                sign.update();
+
             } catch (NumberFormatException e) {
-                player.sendMessage(Component.text("Invalid format on lines 2 or 3! Use numbers of levels on line 2, and cost on line 3.").color(NamedTextColor.RED));
+                player.sendMessage(ChatColor.DARK_RED + "[Wonemy]", ChatColor.RED + "Invalid format on lines 2 or 3.", ChatColor.GREEN + " Use numbers of levels on line 2 and cost on line 3.");
             }
         }
     }
